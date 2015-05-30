@@ -61,3 +61,17 @@ input.report-addr-input {
   height: 50px;
   width: 70px;
 }
+
+.info-container {
+  width: 300px;
+}
+
+.info-form-label {
+  font-weight: bold;
+}
+
+.btn.mers-info-btn {
+  top: 0;
+  padding: 5px;
+  margin-top: 5px;
+}
