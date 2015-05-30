@@ -1,6 +1,22 @@
 if (Meteor.isClient) {
   // Session.setDefault('counter', 0);
 
+  function geocodeHandler() {
+    var address = $('.report-addr-input').val();
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        map.setZoom(15);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+  }
+
   Template.Main.init = function() {
     var mapOptions = {
       zoom: 8,
@@ -31,19 +47,13 @@ if (Meteor.isClient) {
       Session.set('counter', Session.get('counter') + 1);
     },
     'click .report-addr-btn': function() {
-      var address = $('.report-addr-input').val();
-      geocoder.geocode( { 'address': address}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-          map.setCenter(results[0].geometry.location);
-          map.setZoom(15);
-          var marker = new google.maps.Marker({
-              map: map,
-              position: results[0].geometry.location
-          });
-        } else {
-          alert("Geocode was not successful for the following reason: " + status);
-        }
-      });
+      geocodeHandler();
+    },
+    'keypress .report-addr-input': function(e) {
+      if (e.keyCode === 13) {
+        geocodeHandler();
+        return;
+      }
     }
   });
 }
