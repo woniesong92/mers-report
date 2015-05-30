@@ -3,14 +3,20 @@
 
 html, body {
   height: 100%;
-  margin: 0; padding: 0;  /* to avoid scrollbars */
+  /*margin: 0; */
+  /*padding: 0;   */
+}
+
+#content-block {
+  height: 90%;
 }
 
 #header, #footer {
+  /* height is set by javascript: dirty hack.. better way? */
   font-size: 15px;
   background-color: #455A64;
   text-align: center;
   color: white;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  /*padding-top: 5px;*/
+  /*padding-bottom: 5px;*/
 }

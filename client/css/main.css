@@ -1,5 +1,10 @@
 .main-container {
   padding: 0;
+  height: 100%;
+}
+
+.main-inner-container {
+  height: 100%;
 }
 
 .mers-jumbotron, footer {
@@ -13,12 +18,14 @@
 
 #map-canvas {
   width: 100%;
-  height: 80vh;
+  height: calc(100% - 80px);
+  /*height: 80vh;*/
 }
 
 .report-address-container {
   background-color: #607D8B;
   padding-top: 15px;
+  height: 80px;
   padding-bottom: 15px;
 }
 

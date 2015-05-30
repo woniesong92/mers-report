@@ -1,26 +1,23 @@
 <template name="Layout">
 
-<body>
-  <div id="header">
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="col-xs-12">메르스 리포트</div>
-      </div>
+<div id="header">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="col-xs-12">메르스 리포트</div>
     </div>
   </div>
+</div>
 
-  <div id="content-block">
-    {{> yield "content"}}
-  </div>
-    
-  <div id="footer">
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="col-xs-12">footer</div>
-      </div>
+<div id="content-block">
+  {{> yield "content"}}
+</div>
+  
+<div id="footer">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="col-xs-12">footer</div>
     </div>
   </div>
-  
-</body>
+</div>
 
 </template>

@@ -1,21 +1,15 @@
 if (Meteor.isClient) {  
   
   Template.Layout.rendered = function () {
+    var remainingHeight = $('body').height() - $('#content-block').height();
+    var newHeight = remainingHeight / 2.0 + "px";
+    console.log(newHeight);
+    $('#header, #footer').css('height', newHeight);
+    $('#header, #footer').css('line-height', newHeight);
   }
 
   Template.Layout.helpers({
-    
-    // numBaggedItems: function () {
-    //   var bag = Session.get("shoppingBag") || {};
-    //   var count = 0;
-    //   for (var p_id in bag) {
-    //     count = count + bag[p_id];
-    //   }
-    //   return count;
-    // }
 
   });
-
-  // Client side configurations
 
 }
