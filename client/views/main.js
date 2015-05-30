@@ -104,12 +104,6 @@ if (Meteor.isClient) {
             map: map,
             position: new google.maps.LatLng(reports[i].latitude, reports[i].longitude, true)
         });
-          // event listener for marker click
-      google.maps.event.addListener(marker, 'click', function() {
-        map.setZoom(8);
-        map.setCenter(marker.getPosition());
-        Template.Main.viewReport(marker);
-      });
 
     }
   }
@@ -169,16 +163,30 @@ if (Meteor.isClient) {
       var text = $('.report-text').val();
       var lat = infowindow.getPosition().lat();
       var lng = infowindow.getPosition().lng();
-      Meteor.call("addReport", text, lat, lng, function(err, data){
+      Meteor.call("addReport", text, lat, lng, function(err, report){
         if (err){
           console.log(err);
         } else {
-          var new_content = "<div class='info-container'>"
-                            // date and specific address can go here
-                            + "<p>" + text + "</p>"
-                            + html_edit_delete + "</div>";
-                            // share button
-          infowindow.setContent(new_content);
+          // var new_content = "<div class='info-container'>"
+          //                   // date and specific address can go here
+          //                   + "<p>" + text + "</p>"
+          //                   + html_edit_delete + "</div>";
+          //                   // share button
+          // infowindow.setContent(new_content);
+
+        var marker = new google.maps.Marker({
+            map: map,
+            position: new google.maps.LatLng(report.latitude, report.longitude, true)
+        });
+        // event listener for marker click
+        google.maps.event.addListener(marker, 'click', function() {
+          //map.setZoom(8);
+          map.setCenter(marker.getPosition());
+          Template.Main.viewReport(marker);
+        });
+
+        Template.Main.viewReport(marker);
+
         }
         return false;
       });

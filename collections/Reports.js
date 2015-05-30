@@ -16,6 +16,7 @@ Meteor.methods({
     };
 
     Reports.insert(report);
+    return report;
   },
 
   deleteReport: function (reportId) {
