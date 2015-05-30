@@ -1,0 +1,31 @@
+<template name="Layout">
+  <head>
+    <title>MERS REPORT</title>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkBAwtcakw7RALSkCSQbESeOu3cpF9r5Y">
+    </script>
+<!--     <link href='http://fonts.googleapis.com/css?family=Raleway:400,700,600,300' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Reenie+Beanie' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Abril+Fatface' rel='stylesheet' type='text/css'> -->
+    <!-- all the other local CSS/LESS files are automatically referenced -->
+  </head>
+  <body>
+    <!-- <div class="container-fluid nav-bar"> -->
+<!--       <ul class="nav nav-pills">
+        <li role="presentation" class="active"><a href="#">Home</a></li>
+        <li role="presentation"><a href="#">Profile</a></li>
+        <li role="presentation"><a href="#">Messages</a></li>
+      </ul> -->
+    <!-- </div> -->
+
+    <div class="content-block">
+      {{> yield "content"}}
+    </div>
+
+    
+    <!-- Footer template -->
+      <!-- {{> Footer}} -->
+    <!-- //Footer template -->
+  </body>
+
+</template>
