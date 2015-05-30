@@ -5,31 +5,17 @@ if (Meteor.isClient) {
   Template.Main.init = function() {
     var mapOptions = {
       zoom: 8,
-      center: new google.maps.LatLng(-34.397, 150.644)
+      center: new google.maps.LatLng(37.552, 126.989)
     };
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   }
 
+
   Template.Main.rendered = function() {
-    var that = this;
-    $.getScript('/google-map.js', function(data, status, xhr) {
-    });
-
-    // var script = document.createElement('script');
-    // script.type = 'text/javascript';
-    // script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDkBAwtcakw7RALSkCSQbESeOu3cpF9r5Y';
-    // document.body.appendChild(script);
-
-
-    // $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyDkBAwtcakw7RALSkCSQbESeOu3cpF9r5Y", function(data, status, jqxhr) {
-      // var mapOptions = {
-      //   zoom: 8,
-      //   center: new google.maps.LatLng(-34.397, 150.644)
-      // };
-      // map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    // google.maps.event.addDomListener(window, 'load', function() {
+    //   Template.Main.init();
     // });
-
-
+    Template.Main.init();
   }
   
 
