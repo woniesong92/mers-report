@@ -18,7 +18,7 @@ if (Meteor.isClient) {
           var html = "<div class='info-container'>" +
                      "<form class='info-form'>" +
                      "<div class='info-form-label'>신고 내용</div>" +
-                     "<textarea class='form-control' rows='5'></textarea>" +
+                     "<textarea class='form-control report-text' rows='5'></textarea>" +
                      "<button class='btn btn-primary btn-block mers-info-btn'>등록</button>" +
                      "</form>" +
                      "</div>";
@@ -113,6 +113,10 @@ if (Meteor.isClient) {
 
       delete Session.keys["openSignInModal"];
       delete Session.keys["redirectAddr"];
+    },
+    '.mers-info-btn': function(event){
+      event.preventDefault();
+      var text = $('.report-text').val();
     }
   });
 }
