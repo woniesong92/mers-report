@@ -1,3 +1,17 @@
+html_not_signed_in = "<div class='info-container'>" +
+                         "<div class='info-form-label'>신고 등록시 로그인 필요</div>" +
+                         "<button class='btn btn-block google-signin-btn'>구글로 로그인</button>" + 
+                         "<button class='btn btn-block naver-signin-btn'>네이버로 로그인</button>" + 
+                         "</div>";
+
+html_signed_in = "<div class='info-container'>" +
+                     "<form class='info-form'>" +
+                     "<div class='info-form-label'>신고 내용</div>" +
+                     "<textarea class='form-control' rows='5'></textarea>" +
+                     "<button class='btn btn-primary btn-block mers-info-btn'>등록</button>" +
+                     "</form>" +
+                     "</div>";
+
 if (Meteor.isClient) {
   // Session.setDefault('counter', 0);
 
@@ -14,25 +28,10 @@ if (Meteor.isClient) {
             position: results[0].geometry.location
         });
 
-        if (Meteor.user()) {
-          var html = "<div class='info-container'>" +
-                     "<form class='info-form'>" +
-                     "<div class='info-form-label'>신고 내용</div>" +
-                     "<textarea class='form-control report-text' rows='5'></textarea>" +
-                     "<button class='btn btn-primary btn-block mers-info-btn'>등록</button>" +
-                     "</form>" +
-                     "</div>";
-        } else {
-          var html = "<div class='info-container'>" +
-                                   "<div class='info-form-label'>신고 등록시 로그인 필요</div>" +
-                                   "<button class='btn btn-block google-signin-btn'>구글로 로그인</button>" + 
-                                   "<button class='btn btn-block naver-signin-btn'>네이버로 로그인</button>" + 
-                                   "</div>";
-          // var html_not_signed_in = {{> SignInForm}}
-        }
-
-        var infowindow = new google.maps.InfoWindow({
-          content: html
+        // infowindow is global by design.
+        // when login is successful, we show the form instead of login buttons from google login callback
+        window.infowindow = new google.maps.InfoWindow({
+          content: (Meteor.user() ? html_signed_in : html_not_signed_in)
         });
         infowindow.open(map, marker);
 
@@ -97,10 +96,12 @@ if (Meteor.isClient) {
         // reloaded in the meantime; try using client-side login hooks instead.
 
         if (err) {
-          
           console.log("login error:", err);
-
           return false;
+        }
+
+        if (window.infowindow) {
+          infowindow.setContent(html_signed_in);
         }
 
         $('.modal').modal('hide');
@@ -117,6 +118,9 @@ if (Meteor.isClient) {
     '.mers-info-btn': function(event){
       event.preventDefault();
       var text = $('.report-text').val();
+      var lat = infowindow.getPosition().lat();
+      var lng = infowindow.getPosition().lng();
+      
     }
   });
 }
