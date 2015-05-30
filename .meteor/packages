@@ -12,3 +12,6 @@ less
 twbs:bootstrap
 accounts-ui
 accounts-password
+accounts-google
+accounts-base
+service-configuration
