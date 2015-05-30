@@ -8,12 +8,14 @@ Meteor.methods({
     }
 
     var report = {
-      owner: Meteor.userId(),
+      author: Meteor.userId(),
       latitude: lat,
       longitude: lng,
       text: text,
       createdAt: new Date()
     };
+
+    Reports.insert(report);
   },
 
   deleteReport: function (reportId) {
@@ -22,7 +24,7 @@ Meteor.methods({
     }
 
     var report = Reports.findOne({"_id": reportId});
-    if ((Meteor.userId() == report.owner) || (Meteor.user().role == "admin")) {
+    if ((Meteor.userId() == report.author) || (Meteor.user().role == "admin")) {
       Reports.remove(reportId);
     }
   },
@@ -33,7 +35,7 @@ Meteor.methods({
     }
 
     var report = Comments.findOne({"_id": reportId});
-    if (((Meteor.userId() == report.owner) || (Meteor.user().role == "admin")) && iisValidReport(newText)) {
+    if (((Meteor.userId() == report.author) || (Meteor.user().role == "admin")) && iisValidReport(newText)) {
       Reports.update(reportId, {
         $set: {'text': newText}
       });

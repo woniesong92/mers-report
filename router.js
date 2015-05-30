@@ -3,9 +3,12 @@ Router.configure({
 });
 
 Router.route('/', function () {
-  // render the Post template into the "main" region
-  this.render('Main', {to: 'content'}); // Yield Main template to where {{> yield "content"}} is in layout.html
-  
+  this.render('Main', {
+  	to: 'content',
+  	data: function () {
+  		return Reports.find({});
+  	}
+  });
 });
 
 // Router.route('/upload', function () {

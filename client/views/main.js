@@ -7,10 +7,13 @@ html_not_signed_in = "<div class='info-container'>" +
 html_signed_in = "<div class='info-container'>" +
                      "<form class='info-form'>" +
                      "<div class='info-form-label'>신고 내용</div>" +
-                     "<textarea class='form-control' rows='5'></textarea>" +
+                     "<textarea class='form-control report-text' rows='5'></textarea>" +
                      "<button class='btn btn-primary btn-block mers-info-btn'>등록</button>" +
                      "</form>" +
                      "</div>";
+
+html_edit_delete = "<button class='btn btn-block edit-btn'>수정</button>" 
+                         + "<button class='btn btn-block delete-btn'>삭제</button>";
 
 if (Meteor.isClient) {
   // Session.setDefault('counter', 0);
@@ -55,12 +58,59 @@ if (Meteor.isClient) {
     geocoder = new google.maps.Geocoder();
   }
 
+  Template.Main.viewReport = function(marker) {
+    
+    if (window.infowindow){
+      infowindow.close();
+    }
+
+    var report = Reports.findOne({latitude: marker.position.lat(), longitude: marker.position.lng()});
+    console.log(report);
+    if (report != null){
+      var content  = "";
+      if (report.author == Meteor.userId()){
+        content = "<div class='info-container'>"
+                              // date and specific address can go here
+                              + "<p>" + report.text + "</p>"
+                              + html_edit_delete + "</div>";
+                              // share button
+      }else{
+        content = "<div class='info-container'>"
+                              // date and specific address can go here
+                              + "<p>" + report.text + "</p>"
+                               + "</div>";
+                               // share button
+      }
+
+      window.infowindow = new google.maps.InfoWindow({
+          content: content
+      });
+      infowindow.open(map, marker);
+      console.log(report.text);
+    }
+  }
 
   Template.Main.rendered = function() {
     // google.maps.event.addDomListener(window, 'load', function() {
     //   Template.Main.init();
     // });
     Template.Main.init();
+    var reports = UI.getData().fetch();
+    console.log(reports);
+    for (var i=0; i < reports.length; i++){
+      console.log(reports[i].text);
+      var marker = new google.maps.Marker({
+            map: map,
+            position: new google.maps.LatLng(reports[i].latitude, reports[i].longitude, true)
+        });
+          // event listener for marker click
+      google.maps.event.addListener(marker, 'click', function() {
+        map.setZoom(8);
+        map.setCenter(marker.getPosition());
+        Template.Main.viewReport(marker);
+      });
+
+    }
   }
   
 
@@ -104,8 +154,6 @@ if (Meteor.isClient) {
           infowindow.setContent(html_signed_in);
         }
 
-        $('.modal').modal('hide');
-
       });
     },
     'click .cancel-btn': function(event){
@@ -115,12 +163,25 @@ if (Meteor.isClient) {
       delete Session.keys["openSignInModal"];
       delete Session.keys["redirectAddr"];
     },
-    '.mers-info-btn': function(event){
+    'click .mers-info-btn': function(event, template){
       event.preventDefault();
       var text = $('.report-text').val();
       var lat = infowindow.getPosition().lat();
       var lng = infowindow.getPosition().lng();
-      
-    }
+      Meteor.call("addReport", text, lat, lng, function(err, data){
+        if (err){
+          console.log(err);
+        } else {
+          var new_content = "<div class='info-container'>"
+                            // date and specific address can go here
+                            + "<p>" + text + "</p>"
+                            + html_edit_delete + "</div>";
+                            // share button
+          infowindow.setContent(new_content);
+        }
+        return false;
+      });
+    },
+
   });
 }
