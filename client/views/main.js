@@ -15,6 +15,8 @@ html_signed_in = "<div class='info-container'>" +
 html_edit_delete = "<button class='btn btn-block edit-btn'>수정</button>" 
                          + "<button class='btn btn-block delete-btn'>삭제</button>";
 
+
+
 if (Meteor.isClient) {
   // Session.setDefault('counter', 0);
 
@@ -34,6 +36,10 @@ if (Meteor.isClient) {
 
         // infowindow is global by design.
         // when login is successful, we show the form instead of login buttons from google login callback
+        if (window.infowindow){
+          infowindow.close();
+        }
+
         window.infowindow = new google.maps.InfoWindow({
           content: (Meteor.user() ? html_signed_in : html_not_signed_in)
         });
@@ -60,24 +66,24 @@ if (Meteor.isClient) {
   }
 
   Template.Main.viewReport = function(marker) {
-    
     if (window.infowindow){
       infowindow.close();
     }
-
+    // FIXME, not finding the right one
     var report = Reports.findOne({latitude: marker.position.lat(), longitude: marker.position.lng()});
     console.log(report);
+
     if (report != null){
       var content  = "";
       if (report.author == Meteor.userId()){
         content = "<div class='info-container'>"
-                              // date and specific address can go here
+                              + "<strong>" + report.createdAt + "</strong>"
                               + "<p>" + report.text + "</p>"
                               + html_edit_delete + "</div>";
                               // share button
       }else{
         content = "<div class='info-container'>"
-                              // date and specific address can go here
+                              + "<strong>" + report.createdAt + "</strong>"
                               + "<p>" + report.text + "</p>"
                                + "</div>";
                                // share button
@@ -87,6 +93,7 @@ if (Meteor.isClient) {
           content: content
       });
       infowindow.open(map, marker);
+      debugger
       console.log(report.text);
     }
   }
@@ -103,6 +110,13 @@ if (Meteor.isClient) {
       var marker = new google.maps.Marker({
             map: map,
             position: new google.maps.LatLng(reports[i].latitude, reports[i].longitude, true)
+        });
+
+        // event listener for marker click
+        google.maps.event.addListener(marker, 'click', function() {
+          //map.setZoom(8);
+          map.setCenter(marker.getPosition());
+          Template.Main.viewReport(marker);
         });
 
     }
@@ -167,12 +181,6 @@ if (Meteor.isClient) {
         if (err){
           console.log(err);
         } else {
-          // var new_content = "<div class='info-container'>"
-          //                   // date and specific address can go here
-          //                   + "<p>" + text + "</p>"
-          //                   + html_edit_delete + "</div>";
-          //                   // share button
-          // infowindow.setContent(new_content);
 
         var marker = new google.maps.Marker({
             map: map,
