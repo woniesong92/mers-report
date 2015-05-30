@@ -1,0 +1,22 @@
+/* use the flex model */
+/* learn more: http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/ */
+
+html, body {
+  height: 100%;
+  /*margin: 0; */
+  /*padding: 0;   */
+}
+
+#content-block {
+  height: 90%;
+}
+
+#header, #footer {
+  /* height is set by javascript: dirty hack.. better way? */
+  font-size: 15px;
+  background-color: #455A64;
+  text-align: center;
+  color: white;
+  /*padding-top: 5px;*/
+  /*padding-bottom: 5px;*/
+}

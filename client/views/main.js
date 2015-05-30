@@ -28,7 +28,8 @@ if (Meteor.isClient) {
 
         var marker = new google.maps.Marker({
             map: map,
-            position: results[0].geometry.location
+            position: results[0].geometry.location,
+            icon: "/icons/red-dot-blur.png" // change it to "/icons/red-dot.png" on success
         });
 
         // infowindow is global by design.
