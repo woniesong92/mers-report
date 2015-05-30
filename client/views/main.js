@@ -14,13 +14,22 @@ if (Meteor.isClient) {
             position: results[0].geometry.location
         });
 
-        var html = "<div class='info-container'>" +
-                   "<form class='info-form'>" +
-                   "<div class='info-form-label'>신고 내용</div>" +
-                   "<textarea class='form-control' rows='5'></textarea>" +
-                   "<button class='btn btn-primary btn-block mers-info-btn'>등록</button>" +
-                   "</form>" +
-                   "</div>";
+        if (Meteor.user()) {
+          var html = "<div class='info-container'>" +
+                     "<form class='info-form'>" +
+                     "<div class='info-form-label'>신고 내용</div>" +
+                     "<textarea class='form-control' rows='5'></textarea>" +
+                     "<button class='btn btn-primary btn-block mers-info-btn'>등록</button>" +
+                     "</form>" +
+                     "</div>";
+        } else {
+          var html = "<div class='info-container'>" +
+                                   "<div class='info-form-label'>신고 등록시 로그인 필요</div>" +
+                                   "<button class='btn btn-block google-signin-btn'>구글로 로그인</button>" + 
+                                   "<button class='btn btn-block naver-signin-btn'>네이버로 로그인</button>" + 
+                                   "</div>";
+          // var html_not_signed_in = {{> SignInForm}}
+        }
 
         var infowindow = new google.maps.InfoWindow({
           content: html
@@ -75,6 +84,35 @@ if (Meteor.isClient) {
         geocodeHandler();
         return;
       }
+    },
+    'click .google-signin-btn': function(event, template){
+      event.preventDefault();
+      Meteor.loginWithGoogle({
+        requestPermissions: ['email'],
+        forceApprovalPrompt: true
+      }, function(err) {
+        // Optional callback. Called with no arguments on success, or with a 
+        // single Error argument on failure. The callback cannot be called if 
+        // you are using the "redirect" loginStyle, because the app will have 
+        // reloaded in the meantime; try using client-side login hooks instead.
+
+        if (err) {
+          
+          console.log("login error:", err);
+
+          return false;
+        }
+
+        $('.modal').modal('hide');
+
+      });
+    },
+    'click .cancel-btn': function(event){
+      $(".error_message").text("");
+      $("input").val("");
+
+      delete Session.keys["openSignInModal"];
+      delete Session.keys["redirectAddr"];
     }
   });
 }
