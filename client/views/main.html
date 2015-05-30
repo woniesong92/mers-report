@@ -1,3 +1,14 @@
+<head>
+  <title>MERS REPORT</title>
+  <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkBAwtcakw7RALSkCSQbESeOu3cpF9r5Y">
+  </script>
+<!--     <link href='http://fonts.googleapis.com/css?family=Raleway:400,700,600,300' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Reenie+Beanie' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Abril+Fatface' rel='stylesheet' type='text/css'> -->
+  <!-- all the other local CSS/LESS files are automatically referenced -->
+</head>
+
 <template name="Main">
 
 <div class="container-fluid main-container">
@@ -5,26 +16,16 @@
     메르스 리포트
   </div>
   <div class="row-fluid">
-    <div class="map-canvas">
-
-    </div>
-
+    
+    <div id="map-canvas"></div>
     <div class="col-xs-12 col-md-8">.col-xs-12 .col-md-8</div>
     <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
   </div>
 </div>
 
-<div>
-  {{> MainBottom}}
-</div>
-
 </template>
 
-<template name="MainBottom">
-
-  <!-- a helper template inside a bigger template looks like this -->
-  <button>Click Me</button>
-<!--   <p>You've pressed the button {{counter}} times.</p> -->
-  hi loo
-
+<!-- <template name="Map">
+  <div class="map-canvas"></div>
 </template>
+ -->
