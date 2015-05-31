@@ -40,10 +40,10 @@ if (Meteor.isClient) {
           infowindow.close();
         }
 
-        window.infowindow = new google.maps.InfoWindow({
+        marker.infowindow = new google.maps.InfoWindow({
           content: (Meteor.user() ? html_signed_in : html_not_signed_in)
         });
-        infowindow.open(map, marker);
+        marker.infowindow.open(map, marker);
 
         $('.info-form').submit(function() {
           debugger
@@ -65,60 +65,51 @@ if (Meteor.isClient) {
     geocoder = new google.maps.Geocoder();
   }
 
-  Template.Main.viewReport = function(marker) {
-    if (window.infowindow){
-      infowindow.close();
-    }
-    // FIXME, not finding the right one
-    var report = Reports.findOne({latitude: marker.position.lat(), longitude: marker.position.lng()});
-    console.log(report);
-
-    if (report != null){
-      var content  = "";
-      if (report.author == Meteor.userId()){
-        content = "<div class='info-container'>"
-                              + "<strong>" + report.createdAt + "</strong>"
-                              + "<p>" + report.text + "</p>"
-                              + html_edit_delete + "</div>";
-                              // share button
-      }else{
-        content = "<div class='info-container'>"
-                              + "<strong>" + report.createdAt + "</strong>"
-                              + "<p>" + report.text + "</p>"
-                               + "</div>";
-                               // share button
-      }
-
-      window.infowindow = new google.maps.InfoWindow({
-          content: content
-      });
-      infowindow.open(map, marker);
-      debugger
-      console.log(report.text);
-    }
+// Convert a report object into an HTML content to put inside a marker's infowindow
+function makeReportContent(report) {
+  var content;
+  if (report.author == Meteor.userId()){
+    content = "<div class='info-container'>"
+                + "<strong>" + report.createdAt + "</strong>"
+                + "<p>" + report.text + "</p>"
+                + html_edit_delete + "</div>";
+                // share button
+  } else {
+    content = "<div class='info-container'>"
+                + "<strong>" + report.createdAt + "</strong>"
+                + "<p>" + report.text + "</p>"
+                + "</div>";
+                // share button
   }
+  return content;
+}
+
 
   Template.Main.rendered = function() {
     // google.maps.event.addDomListener(window, 'load', function() {
     //   Template.Main.init();
     // });
     Template.Main.init();
+
     var reports = UI.getData().fetch();
     console.log(reports);
-    for (var i=0; i < reports.length; i++){
-      console.log(reports[i].text);
+
+    for (var i=0; i<reports.length; i++){
+      var report = reports[i];
       var marker = new google.maps.Marker({
-            map: map,
-            position: new google.maps.LatLng(reports[i].latitude, reports[i].longitude, true)
-        });
+        map: map,
+        position: new google.maps.LatLng(report.latitude, report.longitude, true)
+      });
 
-        // event listener for marker click
-        google.maps.event.addListener(marker, 'click', function() {
-          //map.setZoom(8);
-          map.setCenter(marker.getPosition());
-          Template.Main.viewReport(marker);
-        });
+      marker.infowindow = new google.maps.InfoWindow({
+        content: makeReportContent(report)
+      });
 
+      // Dear Jenny: Every event listener was showing the last report because of a "closure" issue.
+      // Let me commit it before fixing it so I can teach you. I encountered this problem before too.
+      google.maps.event.addListener(marker, 'click', function() {
+        marker.infowindow.open(map, marker);
+      });
     }
   }
   

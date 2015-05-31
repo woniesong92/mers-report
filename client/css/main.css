@@ -7,15 +7,6 @@
   height: 100%;
 }
 
-.mers-jumbotron, footer {
-  font-size: 15px;
-  background-color: #455A64;
-  text-align: center;
-  color: white;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
 #map-canvas {
   width: 100%;
   height: calc(100% - 80px);
@@ -69,7 +60,6 @@ input.report-addr-input {
 }
 
 .btn.mers-info-btn {
-  /*top: 0;*/
   padding: 5px;
   margin-top: 5px;
 }
