@@ -1,24 +1,30 @@
 html_not_signed_in = "<div class='info-container'>" +
                          "<div class='info-form-label'>신고 등록시 로그인 필요</div>" +
                          "<button class='btn btn-block google-signin-btn'>구글로 로그인</button>" + 
-                         "<button class='btn btn-block naver-signin-btn'>네이버로 로그인</button>" + 
+                         //"<button class='btn btn-block naver-signin-btn'>네이버로 로그인</button>" + 
                          "</div>";
 
 html_signed_in = "<div class='info-container'>" +
+                     "<div class='error_message'></div>" +
                      "<form class='info-form'>" +
                      "<div class='info-form-label'>신고 내용</div>" +
                      "<textarea class='form-control report-text' rows='5'></textarea>" +
+                     "<div class='info-form-label'>전화번호</div>" +
+                     "<input type='text' name='phone' class='form-control report-phone'>" +
                      "<button class='btn btn-primary btn-block mers-info-btn'>등록</button>" +
                      "</form>" +
                      "</div>";
 
-html_edit_delete = "<button class='btn btn-block edit-btn'>수정</button>" 
-                         + "<button class='btn btn-block delete-btn'>삭제</button>";
+html_edit_delete = "<a class='edit-btn'>수정</a>" 
+                         + "<a class='delete-btn'>삭제</a>";
 
 html_edit = "<div class='info-container'>" +
+                     "<div class='error_message'></div>" +
                      "<form class='info-form'>" +
                      "<div class='info-form-label'>신고 내용</div>" +
                      "<textarea class='form-control report-text' rows='5'></textarea>" +
+                     "<div class='info-form-label'>전화번호</div>" +
+                     "<input type='text' name='phone' class='form-control report-phone'>" +
                      "<button class='btn btn-primary btn-block edit-info-btn'>수정</button>" +
                      "</form>" +
                      "</div>";
@@ -184,14 +190,17 @@ function makeReportContent(report) {
     'click .mers-info-btn': function(event, template){
       event.preventDefault();
       var text = $('.report-text').val();
+      var phone = $('.report-phone').val();
 
       var lat = infowindow.getPosition().lat();
       var lng = infowindow.getPosition().lng();
 
-      Meteor.call("addReport", text, lat, lng, function(err, reportId){
+      Meteor.call("addReport", text, phone, lat, lng, function(err, reportId){
         if (err){
           console.log(err);
+          $('.error_message').text(err.reason);
         } else {
+          $(".error_message").text("");
           infowindow.close();
           
           var report = Reports.findOne({_id: reportId});
@@ -230,7 +239,7 @@ function makeReportContent(report) {
         var report = Reports.findOne({ _id: infowindow.reportId });
         infowindow.setContent(html_edit);
         $('.report-text').val(report.text);
-
+        $('.report-phone').val(report.phone);
         google.maps.event.addListener(infowindow,'closeclick',function(){
           infowindow.setContent(makeReportContent(report));
         });
@@ -240,11 +249,14 @@ function makeReportContent(report) {
     'click .edit-info-btn': function(event, template){
       event.preventDefault();
       var text = $('.report-text').val();
-      Meteor.call("editReport", infowindow.reportId, text, function(err, report){
+      var phone = $('.report-phone').val();
+      Meteor.call("editReport", infowindow.reportId, text, phone, function(err, report){
         // debugger
         if (err){
           console.log(err);
+          $(".error_message").text(err.reason);
         } else {
+          $(".error_message").text("");
           infowindow.setContent(makeReportContent(report));
           google.maps.event.clearListeners(infowindow,'closeclick');
 

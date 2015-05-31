@@ -65,6 +65,21 @@ input.report-addr-input {
 }
 
 .edit-btn, .delete-btn {
-  width: 70px;
-  margin: 10px;
+  padding-right: 10px;
+}
+
+.google-signin-btn, .mers-info-btn, .edit-info-btn {
+  margin-top: 5px;
+}
+
+.form-control {
+  margin-bottom: 15px;
+}
+
+.info-container {
+  padding: 10px;
+}
+
+.error_message {
+  color: red;
 }
