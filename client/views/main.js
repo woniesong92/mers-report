@@ -170,6 +170,7 @@ function makeReportContent(report) {
         if (err){
           console.log(err);
         } else {
+          infowindow.close();
 
           var marker = new google.maps.Marker({
             map: map,
@@ -180,9 +181,10 @@ function makeReportContent(report) {
             content: makeReportContent(report)
           });
 
+          marker.infowindow.open(map, marker);
+
           google.maps.event.addListener(marker, 'click', function() {
             map.setCenter(marker.getPosition());
-            // FIXME: close the previous infowindow
             marker.infowindow.open(map, marker);
           });
         }
