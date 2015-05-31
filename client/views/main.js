@@ -26,6 +26,7 @@ html_edit = "<div class='info-container'>" +
 unset_marker = null;
 
 if (Meteor.isClient) {
+
   // Handles the event where the user searches an address
   function geocodeHandler() {
     if (!!unset_marker){
@@ -103,6 +104,7 @@ function makeReportContent(report) {
     Template.Main.init();
 
     var reports = UI.getData().fetch();
+
     $.each(reports, function(idx, report) {
       var marker = new google.maps.Marker({
         map: map,
@@ -116,9 +118,10 @@ function makeReportContent(report) {
 
       // replacing for loop with $.each function fixes the problem
       google.maps.event.addListener(marker, 'click', function() {
-        if (window.infowindow){
-              infowindow.close();
-            }
+        if (window.infowindow) {
+          infowindow.close();
+        }
+        map.setZoom(14);
         map.setCenter(marker.getPosition());
         marker.infowindow.open(map, marker);
         window.infowindow = marker.infowindow;
@@ -190,7 +193,9 @@ function makeReportContent(report) {
           console.log(err);
         } else {
           infowindow.close();
+          
           var report = Reports.findOne({_id: reportId});
+
           var marker = new google.maps.Marker({
             map: map,
             position: new google.maps.LatLng(report.latitude, report.longitude, true),
@@ -222,7 +227,6 @@ function makeReportContent(report) {
     },
     'click .edit-btn': function(event, template){
       if (window.infowindow){
-        //var reports = UI.getData();
         var report = Reports.findOne({ _id: infowindow.reportId });
         infowindow.setContent(html_edit);
         $('.report-text').val(report.text);
