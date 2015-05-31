@@ -72,6 +72,10 @@ input.report-addr-input {
   margin-top: 5px;
 }
 
-.info-container strong {
-  margin-bottom: 10px;
+.form-control {
+  margin-bottom: 15px;
+}
+
+.info-container {
+  padding: 10px;
 }
