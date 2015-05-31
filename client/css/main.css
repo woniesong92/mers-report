@@ -107,3 +107,7 @@ a:hover {
   font-weight: bold;
   font-size: 15px;
 }
+
+.red {
+  color: red;
+}
