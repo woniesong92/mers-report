@@ -1,5 +1,5 @@
 html_not_signed_in = "<div class='info-container'>" +
-                         "<div class='info-form-label'>신고 등록시 로그인 필요</div>" +
+                         "<div class='info-form-label'>사례 등록시 로그인 필요</div>" +
                          "<button class='btn btn-block google-signin-btn'>구글로 로그인</button>" + 
                          //"<button class='btn btn-block naver-signin-btn'>네이버로 로그인</button>" + 
                          "</div>";
@@ -7,7 +7,7 @@ html_not_signed_in = "<div class='info-container'>" +
 html_signed_in = "<div class='info-container'>" +
                      "<div class='error_message'></div>" +
                      "<form class='info-form'>" +
-                     "<div class='info-form-label'>신고 내용</div>" +
+                     "<div class='info-form-label'>사례 내용</div>" +
                      "<textarea class='form-control report-text' rows='5'></textarea>" +
                      "<div class='info-form-label'>전화번호</div>" +
                      "<input type='text' name='phone' class='form-control report-phone'>" +
@@ -21,7 +21,7 @@ html_edit_delete = "<a class='edit-btn'>수정</a>"
 html_edit = "<div class='info-container'>" +
                      "<div class='error_message'></div>" +
                      "<form class='info-form'>" +
-                     "<div class='info-form-label'>신고 내용</div>" +
+                     "<div class='info-form-label'>사례 내용</div>" +
                      "<textarea class='form-control report-text' rows='5'></textarea>" +
                      "<div class='info-form-label'>전화번호</div>" +
                      "<input type='text' name='phone' class='form-control report-phone'>" +

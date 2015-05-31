@@ -9,14 +9,14 @@
 
 #map-canvas {
   width: 100%;
-  height: calc(100% - 80px);
+  height: calc(100% - 110px);
   /*height: 80vh;*/
 }
 
 .report-address-container {
   background-color: #607D8B;
   padding-top: 15px;
-  height: 80px;
+  height: 110px;
   padding-bottom: 15px;
 }
 
@@ -99,4 +99,11 @@ a, a:link, a:visited {
 
 a:hover {
   text-decoration: underline;
+}
+
+.warning {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+  font-size: 15px;
 }

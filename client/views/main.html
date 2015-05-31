@@ -24,10 +24,11 @@
   <div class="row-fluid main-inner-container">
     <div class="col-xs-12 report-address-container">
       <table class="inner-container">
-        <span class="mers-label">메르스 의심신고</span>
+        <span class="mers-label">메르스 의심사례</span>
         <input type="text" class="report-addr-input form-control" placeholder="서울시 중구 태평로 3가 31 OR 서울시 중구 세종대로 900"/>
         <button type="submit" class="btn btn-block btn-default report-addr-btn">검색</button>
       </table>
+      <div class="warning">의도적으로 허위사실을 기재시 법적처벌을 받을 수 있습니다. <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> 핫라인: 043-719-7777</div>
     </div>
     <div id="map-canvas"></div>
   </div>
@@ -37,8 +38,8 @@
 
 <template name="SigninForm">
   <div class='info-container'>
-    <div class='info-form-label'>신고 등록시 로그인 필요</div>
+    <div class='info-form-label'>사례 등록시 로그인 필요</div>
     <button class='btn btn-block google-signin-btn'>구글로 로그인</button>
-    <button class='btn btn-block naver-signin-btn'>네이버로 로그인</button>
+    <!-- <button class='btn btn-block naver-signin-btn'>네이버로 로그인</button> -->
   </div>
 </template>
