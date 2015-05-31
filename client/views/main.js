@@ -109,6 +109,9 @@ function makeReportContent(report) {
 
       // replacing for loop with $.each function fixes the problem
       google.maps.event.addListener(marker, 'click', function() {
+        if (window.infowindow){
+              infowindow.close();
+            }
         map.setCenter(marker.getPosition());
         marker.infowindow.open(map, marker);
         window.infowindow = marker.infowindow;
@@ -195,6 +198,9 @@ function makeReportContent(report) {
           window.infowindow = marker.infowindow;
 
           google.maps.event.addListener(marker, 'click', function() {
+            if (window.infowindow){
+              infowindow.close();
+            }
             map.setCenter(marker.getPosition());
             marker.infowindow.open(map, marker);
             window.infowindow = marker.infowindow;
