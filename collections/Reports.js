@@ -41,7 +41,7 @@ Meteor.methods({
       });
       report = Reports.findOne({"_id": reportId});
     }
-    debugger
+    // debugger
     return report;
   },
 

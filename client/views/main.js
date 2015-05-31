@@ -202,8 +202,10 @@ function makeReportContent(report) {
             marker.infowindow.open(map, marker);
             window.infowindow = marker.infowindow;
           });
+
+
         }
-        debugger
+        // debugger
         return false;
       });
     },
@@ -213,17 +215,18 @@ function makeReportContent(report) {
         var report = Reports.findOne({ _id: infowindow.reportId });
         infowindow.setContent(html_edit);
         $('.report-text').val(report.text);
-        
+
         google.maps.event.addListener(infowindow,'closeclick',function(){
           infowindow.setContent(makeReportContent(report));
         });
+        
       }
     },
     'click .edit-info-btn': function(event, template){
       event.preventDefault();
       var text = $('.report-text').val();
       Meteor.call("editReport", infowindow.reportId, text, function(err, report){
-        debugger
+        // debugger
         if (err){
           console.log(err);
         } else {
@@ -249,7 +252,13 @@ function makeReportContent(report) {
           //   marker.infowindow.open(map, marker);
           //   window.infowindow = marker.infowindow;
           // });
+
+          // debugger;
+
           infowindow.setContent(makeReportContent(report));
+          google.maps.event.clearListeners(infowindow,'closeclick');
+
+          // infowindow.anchor.infowindow.setContent(makeReportContent(report));
 
         }
         return false;
