@@ -21,6 +21,10 @@ html, body {
   /*padding-bottom: 5px;*/
 }
 
+#header a {
+  color: white;
+}
+
 #footer a {
   color: white;
 }

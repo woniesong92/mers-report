@@ -16,3 +16,7 @@ Router.route('/', {
     });
   }
 });
+
+Router.route('/about', function () {
+  this.render('About', {to: 'content'});  
+});
