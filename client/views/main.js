@@ -24,6 +24,7 @@ html_edit = "<div class='info-container'>" +
                      "</div>";
 
 if (Meteor.isClient) {
+
   // Handles the event where the user searches an address
   function geocodeHandler() {
     var address = $('.report-addr-input').val();
@@ -97,6 +98,9 @@ function makeReportContent(report) {
     Template.Main.init();
 
     var reports = UI.getData().fetch();
+
+    debugger
+
     $.each(reports, function(idx, report) {
       var marker = new google.maps.Marker({
         map: map,
@@ -182,7 +186,9 @@ function makeReportContent(report) {
           console.log(err);
         } else {
           infowindow.close();
+          
           var report = Reports.findOne({_id: reportId});
+
           var marker = new google.maps.Marker({
             map: map,
             position: new google.maps.LatLng(report.latitude, report.longitude, true),
@@ -211,7 +217,6 @@ function makeReportContent(report) {
     },
     'click .edit-btn': function(event, template){
       if (window.infowindow){
-        //var reports = UI.getData();
         var report = Reports.findOne({ _id: infowindow.reportId });
         infowindow.setContent(html_edit);
         $('.report-text').val(report.text);
