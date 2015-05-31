@@ -18,8 +18,6 @@ html_edit_delete = "<button class='btn btn-block edit-btn'>수정</button>"
 
 
 if (Meteor.isClient) {
-  // Session.setDefault('counter', 0);
-
   // Handles the event where the user searches an address
   function geocodeHandler() {
     var address = $('.report-addr-input').val();
@@ -34,21 +32,21 @@ if (Meteor.isClient) {
             icon: "/icons/red-dot-blur.png" // change it to "/icons/red-dot.png" on success
         });
 
-        // infowindow is global by design.
-        // when login is successful, we show the form instead of login buttons from google login callback
         if (window.infowindow){
           infowindow.close();
         }
-
         marker.infowindow = new google.maps.InfoWindow({
           content: (Meteor.user() ? html_signed_in : html_not_signed_in)
         });
         marker.infowindow.open(map, marker);
 
+        // infowindow is global by design.
+        // when login is successful, we show the form instead of login buttons from google login callback
+        window.infowindow = marker.infowindow;
+
         $('.info-form').submit(function() {
           debugger
-        })
-
+        });
 
       } else {
         alert("Geocode was not successful for the following reason: " + status);
@@ -92,27 +90,7 @@ function makeReportContent(report) {
     Template.Main.init();
 
     var reports = UI.getData().fetch();
-
-    // for (var i=0; i<reports.length; i++){
-    //   var report = reports[i];
-    //   var marker = new google.maps.Marker({
-    //     map: map,
-    //     position: new google.maps.LatLng(report.latitude, report.longitude, true)
-    //   });
-
-    //   marker.infowindow = new google.maps.InfoWindow({
-    //     content: makeReportContent(report)
-    //   });
-
-    //   // Dear Jenny: Every event listener was showing the last report because of a "closure" issue.
-    //   // Let me commit it before fixing it so I can teach you. I encountered this problem before too.
-    //   google.maps.event.addListener(marker, 'click', function() {
-    //     marker.infowindow.open(map, marker);
-    //   });
-    // }
-
     $.each(reports, function(idx, report) {
-      // var report = reports[i];
       var marker = new google.maps.Marker({
         map: map,
         position: new google.maps.LatLng(report.latitude, report.longitude, true)
@@ -124,6 +102,7 @@ function makeReportContent(report) {
 
       // replacing for loop with $.each function fixes the problem
       google.maps.event.addListener(marker, 'click', function() {
+        map.setCenter(marker.getPosition());
         marker.infowindow.open(map, marker);
       });
     });
@@ -183,26 +162,29 @@ function makeReportContent(report) {
     'click .mers-info-btn': function(event, template){
       event.preventDefault();
       var text = $('.report-text').val();
+
       var lat = infowindow.getPosition().lat();
       var lng = infowindow.getPosition().lng();
+
       Meteor.call("addReport", text, lat, lng, function(err, report){
         if (err){
           console.log(err);
         } else {
 
-        var marker = new google.maps.Marker({
+          var marker = new google.maps.Marker({
             map: map,
             position: new google.maps.LatLng(report.latitude, report.longitude, true)
-        });
-        // event listener for marker click
-        google.maps.event.addListener(marker, 'click', function() {
-          //map.setZoom(8);
-          map.setCenter(marker.getPosition());
-          Template.Main.viewReport(marker);
-        });
+          });
 
-        Template.Main.viewReport(marker);
+          marker.infowindow = new google.maps.InfoWindow({
+            content: makeReportContent(report)
+          });
 
+          google.maps.event.addListener(marker, 'click', function() {
+            map.setCenter(marker.getPosition());
+            // FIXME: close the previous infowindow
+            marker.infowindow.open(map, marker);
+          });
         }
         return false;
       });
