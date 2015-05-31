@@ -1,10 +1,8 @@
-Building a webite where people can share their simple ideas and get feedback.
-A kickstarter without an MVP.
+# 메르스 리포트
+## 메르스 확산 방지에 보탬이 되고자 만들어진 웹사이트
 
-How I added bootstarp:
+### [mersreport.me](http://mersreport.me).
 
-http://www.manuel-schoebel.com/blog/meteorjs-and-twitter-bootstrap---the-right-way
-https://github.com/Nemo64/meteor-bootstrap
+메르스 리포트는 국민들이 힘을 합쳐 정보를 취합해 메르스의 확산 정보를 공유하고 위험에 대비할 수 있게 만든 웹사이트 입니다. 메인 화면의 지도에서 주소를 검색하고 메르스 의심 사례 등록을 하면 그 즉시 사이트에 업데이트 됩니다. 지도에 있는 마커는 등록된 항목을 나타내고 마커를 누르면 정확히 어떤 내용인지 공유 됩니다. 무분별한 사례 등록 방지를 위해 사용자는 구글 계정으로 로그인을 해야하며 사례 등록시 전화번호를 기재해서 추후 답변을 기대할 수 있습니다 (미정). 의도적으로 허위정보를 기재할 시 법적처벌을 받을 수 있습니다.
 
-Routing:
-https://github.com/iron-meteor/iron-router/blob/devel/Guide.md메르스 리포트
+[질병관리본부](http://www.cdc.go.kr/).
