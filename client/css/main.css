@@ -36,6 +36,8 @@
   padding-left: 10px;
   padding-right: 10px;
   color: white;
+  position: relative;
+  top: 1px;
 }
 
 input.report-addr-input {
@@ -43,12 +45,19 @@ input.report-addr-input {
   float: left;
   height: 50px;
   font-size: 15px;
+  border-radius: 0;
+  position: relative;
+}
+
+input.report-addr-input:focus {
+  outline: 0;
 }
 
 .report-addr-btn {
   height: 50px;
   width: 70px;
   font-size: 18px;
+  border-radius: 0;
 }
 
 .info-container {
