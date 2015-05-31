@@ -23,9 +23,15 @@ html_edit = "<div class='info-container'>" +
                      "</form>" +
                      "</div>";
 
+unset_marker = null;
+
 if (Meteor.isClient) {
   // Handles the event where the user searches an address
   function geocodeHandler() {
+    if (!!unset_marker){
+      unset_marker.setMap(null)
+    }
+
     var address = $('.report-addr-input').val();
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
@@ -49,6 +55,7 @@ if (Meteor.isClient) {
         // infowindow is global by design.
         // when login is successful, we show the form instead of login buttons from google login callback
         window.infowindow = marker.infowindow;
+        unset_marker = marker;
 
         $('.info-form').submit(function() {
           debugger
@@ -196,6 +203,7 @@ function makeReportContent(report) {
 
           marker.infowindow.open(map, marker);
           window.infowindow = marker.infowindow;
+          unset_marker = null;
 
           google.maps.event.addListener(marker, 'click', function() {
             if (window.infowindow){

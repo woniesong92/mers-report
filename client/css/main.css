@@ -63,3 +63,8 @@ input.report-addr-input {
   padding: 5px;
   margin-top: 5px;
 }
+
+.edit-btn, .delete-btn {
+  width: 70px;
+  margin: 10px;
+}
