@@ -43,8 +43,7 @@ if (Meteor.isClient) {
           infowindow.close();
         }
         marker.infowindow = new google.maps.InfoWindow({
-          content: (Meteor.user() ? html_signed_in : html_not_signed_in),
-          marker: marker
+          content: (Meteor.user() ? html_signed_in : html_not_signed_in)
         });
         marker.infowindow.open(map, marker);
 
@@ -109,12 +108,14 @@ function makeReportContent(report) {
 
       marker.infowindow = new google.maps.InfoWindow({
         content: makeReportContent(report),
-        reportId: report._id,
-        marker: marker
+        reportId: report._id
       });
 
       // replacing for loop with $.each function fixes the problem
       google.maps.event.addListener(marker, 'click', function() {
+        if (window.infowindow){
+              infowindow.close();
+            }
         map.setCenter(marker.getPosition());
         marker.infowindow.open(map, marker);
         window.infowindow = marker.infowindow;
@@ -196,14 +197,16 @@ function makeReportContent(report) {
 
           marker.infowindow = new google.maps.InfoWindow({
             content: makeReportContent(report),
-            reportId: reportId,
-            marker: marker
+            reportId: reportId
           });
 
           marker.infowindow.open(map, marker);
           window.infowindow = marker.infowindow;
 
           google.maps.event.addListener(marker, 'click', function() {
+            if (window.infowindow){
+              infowindow.close();
+            }
             map.setCenter(marker.getPosition());
             marker.infowindow.open(map, marker);
             window.infowindow = marker.infowindow;
@@ -235,35 +238,10 @@ function makeReportContent(report) {
         if (err){
           console.log(err);
         } else {
-          // infowindow.marker.setMap(null);
-          // infowindow.close();
-          // can we prevent this repeat?
-          // var marker = new google.maps.Marker({
-          //   map: map,
-          //   position: new google.maps.LatLng(report.latitude, report.longitude, true)
-          // });
-
-          // marker.infowindow = new google.maps.InfoWindow({
-          //   content: makeReportContent(report),
-          //   reportId: report._id,
-          //   marker: marker
-          // });
-
-          // marker.infowindow.open(map, marker);
-          // window.infowindow = marker.infowindow;
-
-          // google.maps.event.addListener(marker, 'click', function() {
-          //   map.setCenter(marker.getPosition());
-          //   marker.infowindow.open(map, marker);
-          //   window.infowindow = marker.infowindow;
-          // });
-
-          // debugger;
-
           infowindow.setContent(makeReportContent(report));
           google.maps.event.clearListeners(infowindow,'closeclick');
 
-          // infowindow.anchor.infowindow.setContent(makeReportContent(report));
+          //infowindow.anchor.infowindow.setContent(makeReportContent(report));
 
         }
         return false;
@@ -275,7 +253,7 @@ function makeReportContent(report) {
         if (err){
           console.log(err);
         } else {
-          window.infowindow.marker.setMap(null);
+          infowindow.anchor.setMap(null);
           window.infowindow.close();
         }
         return false;
