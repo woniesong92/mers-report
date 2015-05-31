@@ -201,6 +201,7 @@ function makeReportContent(report) {
           $('.error_message').text(err.reason);
         } else {
           $(".error_message").text("");
+          infowindow.anchor.setMap(null);
           infowindow.close();
           
           var report = Reports.findOne({_id: reportId});
