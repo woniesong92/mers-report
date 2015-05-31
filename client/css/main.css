@@ -92,3 +92,11 @@ input.report-addr-input:focus {
 .error_message {
   color: red;
 }
+
+a, a:link, a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
