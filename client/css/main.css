@@ -79,3 +79,7 @@ input.report-addr-input {
 .info-container {
   padding: 10px;
 }
+
+.error_message {
+  color: red;
+}

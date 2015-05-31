@@ -5,6 +5,7 @@ html_not_signed_in = "<div class='info-container'>" +
                          "</div>";
 
 html_signed_in = "<div class='info-container'>" +
+                     "<div class='error_message'></div>" +
                      "<form class='info-form'>" +
                      "<div class='info-form-label'>신고 내용</div>" +
                      "<textarea class='form-control report-text' rows='5'></textarea>" +
@@ -18,6 +19,7 @@ html_edit_delete = "<a class='edit-btn'>수정</a>"
                          + "<a class='delete-btn'>삭제</a>";
 
 html_edit = "<div class='info-container'>" +
+                     "<div class='error_message'></div>" +
                      "<form class='info-form'>" +
                      "<div class='info-form-label'>신고 내용</div>" +
                      "<textarea class='form-control report-text' rows='5'></textarea>" +
@@ -196,7 +198,9 @@ function makeReportContent(report) {
       Meteor.call("addReport", text, phone, lat, lng, function(err, reportId){
         if (err){
           console.log(err);
+          $('.error_message').text(err.reason);
         } else {
+          $(".error_message").text("");
           infowindow.close();
           
           var report = Reports.findOne({_id: reportId});
@@ -250,7 +254,9 @@ function makeReportContent(report) {
         // debugger
         if (err){
           console.log(err);
+          $(".error_message").text(err.reason);
         } else {
+          $(".error_message").text("");
           infowindow.setContent(makeReportContent(report));
           google.maps.event.clearListeners(infowindow,'closeclick');
 
