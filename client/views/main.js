@@ -92,10 +92,27 @@ function makeReportContent(report) {
     Template.Main.init();
 
     var reports = UI.getData().fetch();
-    console.log(reports);
 
-    for (var i=0; i<reports.length; i++){
-      var report = reports[i];
+    // for (var i=0; i<reports.length; i++){
+    //   var report = reports[i];
+    //   var marker = new google.maps.Marker({
+    //     map: map,
+    //     position: new google.maps.LatLng(report.latitude, report.longitude, true)
+    //   });
+
+    //   marker.infowindow = new google.maps.InfoWindow({
+    //     content: makeReportContent(report)
+    //   });
+
+    //   // Dear Jenny: Every event listener was showing the last report because of a "closure" issue.
+    //   // Let me commit it before fixing it so I can teach you. I encountered this problem before too.
+    //   google.maps.event.addListener(marker, 'click', function() {
+    //     marker.infowindow.open(map, marker);
+    //   });
+    // }
+
+    $.each(reports, function(idx, report) {
+      // var report = reports[i];
       var marker = new google.maps.Marker({
         map: map,
         position: new google.maps.LatLng(report.latitude, report.longitude, true)
@@ -105,12 +122,12 @@ function makeReportContent(report) {
         content: makeReportContent(report)
       });
 
-      // Dear Jenny: Every event listener was showing the last report because of a "closure" issue.
-      // Let me commit it before fixing it so I can teach you. I encountered this problem before too.
+      // replacing for loop with $.each function fixes the problem
       google.maps.event.addListener(marker, 'click', function() {
         marker.infowindow.open(map, marker);
       });
-    }
+    });
+
   }
   
 
