@@ -98,8 +98,6 @@ function makeReportContent(report) {
 
     var reports = UI.getData().fetch();
 
-    debugger
-
     $.each(reports, function(idx, report) {
       var marker = new google.maps.Marker({
         map: map,
@@ -113,9 +111,10 @@ function makeReportContent(report) {
 
       // replacing for loop with $.each function fixes the problem
       google.maps.event.addListener(marker, 'click', function() {
-        if (window.infowindow){
-              infowindow.close();
-            }
+        if (window.infowindow) {
+          infowindow.close();
+        }
+        map.setZoom(14);
         map.setCenter(marker.getPosition());
         marker.infowindow.open(map, marker);
         window.infowindow = marker.infowindow;
