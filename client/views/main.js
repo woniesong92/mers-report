@@ -1,7 +1,7 @@
 html_not_signed_in = "<div class='info-container'>" +
                          "<div class='info-form-label'>신고 등록시 로그인 필요</div>" +
                          "<button class='btn btn-block google-signin-btn'>구글로 로그인</button>" + 
-                         "<button class='btn btn-block naver-signin-btn'>네이버로 로그인</button>" + 
+                         //"<button class='btn btn-block naver-signin-btn'>네이버로 로그인</button>" + 
                          "</div>";
 
 html_signed_in = "<div class='info-container'>" +
@@ -12,8 +12,8 @@ html_signed_in = "<div class='info-container'>" +
                      "</form>" +
                      "</div>";
 
-html_edit_delete = "<button class='btn btn-block edit-btn'>수정</button>" 
-                         + "<button class='btn btn-block delete-btn'>삭제</button>";
+html_edit_delete = "<a class='edit-btn'>수정</a>" 
+                         + "<a class='delete-btn'>삭제</a>";
 
 html_edit = "<div class='info-container'>" +
                      "<form class='info-form'>" +
