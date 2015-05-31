@@ -15,7 +15,13 @@ html_signed_in = "<div class='info-container'>" +
 html_edit_delete = "<button class='btn btn-block edit-btn'>수정</button>" 
                          + "<button class='btn btn-block delete-btn'>삭제</button>";
 
-
+html_edit = "<div class='info-container'>" +
+                     "<form class='info-form'>" +
+                     "<div class='info-form-label'>신고 내용</div>" +
+                     "<textarea class='form-control report-text' rows='5'></textarea>" +
+                     "<button class='btn btn-primary btn-block edit-info-btn'>수정</button>" +
+                     "</form>" +
+                     "</div>";
 
 if (Meteor.isClient) {
   // Handles the event where the user searches an address
@@ -36,7 +42,8 @@ if (Meteor.isClient) {
           infowindow.close();
         }
         marker.infowindow = new google.maps.InfoWindow({
-          content: (Meteor.user() ? html_signed_in : html_not_signed_in)
+          content: (Meteor.user() ? html_signed_in : html_not_signed_in),
+          marker: marker
         });
         marker.infowindow.open(map, marker);
 
@@ -97,13 +104,17 @@ function makeReportContent(report) {
       });
 
       marker.infowindow = new google.maps.InfoWindow({
-        content: makeReportContent(report)
+        content: makeReportContent(report),
+        reportId: report._id,
+        marker: marker
       });
 
       // replacing for loop with $.each function fixes the problem
       google.maps.event.addListener(marker, 'click', function() {
         map.setCenter(marker.getPosition());
         marker.infowindow.open(map, marker);
+        window.infowindow = marker.infowindow;
+        console.log(marker.infowindow.reportId);
       });
     });
 
@@ -166,27 +177,92 @@ function makeReportContent(report) {
       var lat = infowindow.getPosition().lat();
       var lng = infowindow.getPosition().lng();
 
-      Meteor.call("addReport", text, lat, lng, function(err, report){
+      Meteor.call("addReport", text, lat, lng, function(err, reportId){
         if (err){
           console.log(err);
         } else {
           infowindow.close();
-
+          var report = Reports.findOne({_id: reportId});
           var marker = new google.maps.Marker({
             map: map,
-            position: new google.maps.LatLng(report.latitude, report.longitude, true)
+            position: new google.maps.LatLng(report.latitude, report.longitude, true),
           });
 
           marker.infowindow = new google.maps.InfoWindow({
-            content: makeReportContent(report)
+            content: makeReportContent(report),
+            reportId: reportId,
+            marker: marker
           });
 
           marker.infowindow.open(map, marker);
+          window.infowindow = marker.infowindow;
 
           google.maps.event.addListener(marker, 'click', function() {
             map.setCenter(marker.getPosition());
             marker.infowindow.open(map, marker);
+            window.infowindow = marker.infowindow;
           });
+        }
+        debugger
+        return false;
+      });
+    },
+    'click .edit-btn': function(event, template){
+      if (window.infowindow){
+        //var reports = UI.getData();
+        var report = Reports.findOne({ _id: infowindow.reportId });
+        infowindow.setContent(html_edit);
+        $('.report-text').val(report.text);
+        
+        google.maps.event.addListener(infowindow,'closeclick',function(){
+          infowindow.setContent(makeReportContent(report));
+        });
+      }
+    },
+    'click .edit-info-btn': function(event, template){
+      event.preventDefault();
+      var text = $('.report-text').val();
+      Meteor.call("editReport", infowindow.reportId, text, function(err, report){
+        debugger
+        if (err){
+          console.log(err);
+        } else {
+          // infowindow.marker.setMap(null);
+          // infowindow.close();
+          // can we prevent this repeat?
+          // var marker = new google.maps.Marker({
+          //   map: map,
+          //   position: new google.maps.LatLng(report.latitude, report.longitude, true)
+          // });
+
+          // marker.infowindow = new google.maps.InfoWindow({
+          //   content: makeReportContent(report),
+          //   reportId: report._id,
+          //   marker: marker
+          // });
+
+          // marker.infowindow.open(map, marker);
+          // window.infowindow = marker.infowindow;
+
+          // google.maps.event.addListener(marker, 'click', function() {
+          //   map.setCenter(marker.getPosition());
+          //   marker.infowindow.open(map, marker);
+          //   window.infowindow = marker.infowindow;
+          // });
+          infowindow.setContent(makeReportContent(report));
+
+        }
+        return false;
+      });
+    },
+    'click .delete-btn': function(event, template){
+      event.preventDefault();
+      Meteor.call("deleteReport", window.infowindow.reportId, function(err){
+        if (err){
+          console.log(err);
+        } else {
+          window.infowindow.marker.setMap(null);
+          window.infowindow.close();
         }
         return false;
       });

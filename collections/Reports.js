@@ -6,17 +6,17 @@ Meteor.methods({
     if (!Meteor.userId()) {
       throw new Meteor.Error("not-authorized");
     }
+    if (isValidReport(text)){
+      var report = {
+        author: Meteor.userId(),
+        latitude: lat,
+        longitude: lng,
+        text: text,
+        createdAt: new Date()
+      };
 
-    var report = {
-      author: Meteor.userId(),
-      latitude: lat,
-      longitude: lng,
-      text: text,
-      createdAt: new Date()
-    };
-
-    Reports.insert(report);
-    return report;
+      return Reports.insert(report);
+    }
   },
 
   deleteReport: function (reportId) {
@@ -34,13 +34,15 @@ Meteor.methods({
     if (!Meteor.userId()) {
       throw new Meteor.Error("not-authorized");
     }
-
-    var report = Comments.findOne({"_id": reportId});
-    if (((Meteor.userId() == report.author) || (Meteor.user().role == "admin")) && iisValidReport(newText)) {
+    var report = Reports.findOne({"_id": reportId});
+    if (((Meteor.userId() == report.author) || (Meteor.user().role == "admin")) && isValidReport(newText)) {
       Reports.update(reportId, {
         $set: {'text': newText}
       });
+      report = Reports.findOne({"_id": reportId});
     }
+    debugger
+    return report;
   },
 
 });
